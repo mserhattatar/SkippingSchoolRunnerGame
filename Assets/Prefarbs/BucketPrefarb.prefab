@@ -13,13 +13,14 @@ GameObject:
   - component: {fileID: 3331520513860205021}
   - component: {fileID: 220865252755524613}
   - component: {fileID: 4512022366075834699}
+  - component: {fileID: 456939378}
   m_Layer: 0
   m_Name: BucketPrefarb
-  m_TagString: LevelGameObject
+  m_TagString: PassiveObstacleObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3331520513862630207
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3331520513862461215}
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000026226041}
+  m_LocalRotation: {x: -0, y: -1, z: 0, w: -0.0000001872535}
   m_LocalPosition: {x: -2.7500243, y: 0, z: -34.375023}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
@@ -112,3 +113,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &456939378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331520513862461215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c6767d7919e144abe6fa72d80f0539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameObjectActive: 0

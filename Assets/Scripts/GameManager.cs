@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
         StudentAnimatorController.instance.StudentAngryAnimation(false);
         TeacherManager.instance.ResetTeacher();
         GameDataScript.SaveLevelDataAsJson();
+        ObstacleObjectsManager.instance.ResetObstacleObjects();
     }
 
     public void StartGame()

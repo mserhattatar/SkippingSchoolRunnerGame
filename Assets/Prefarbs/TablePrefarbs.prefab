@@ -13,13 +13,14 @@ GameObject:
   - component: {fileID: 6898442212619745103}
   - component: {fileID: 4329041211064788995}
   - component: {fileID: 5214221750576061863}
+  - component: {fileID: 1619982679}
   m_Layer: 0
   m_Name: TablePrefarbs
-  m_TagString: LevelGameObject
+  m_TagString: PassiveObstacleObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6019791096034182653
 Transform:
   m_ObjectHideFlags: 0
@@ -114,3 +115,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1619982679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5254600172990072177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c6767d7919e144abe6fa72d80f0539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameObjectActive: 0
