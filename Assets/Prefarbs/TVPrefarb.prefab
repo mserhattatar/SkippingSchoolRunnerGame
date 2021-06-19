@@ -13,13 +13,14 @@ GameObject:
   - component: {fileID: 6492082044575232006}
   - component: {fileID: 429473289418021942}
   - component: {fileID: 613718056238254849}
+  - component: {fileID: 441950186}
   m_Layer: 0
   m_Name: TVPrefarb
-  m_TagString: LevelGameObject
+  m_TagString: PassiveObstacleObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6492082044577526502
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6492082044577492678}
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000026226041}
+  m_LocalRotation: {x: -0, y: -1, z: 0, w: -0.0000001872535}
   m_LocalPosition: {x: -5.775025, y: 0, z: -39.800014}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
@@ -113,3 +114,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &441950186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6492082044577492678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c6767d7919e144abe6fa72d80f0539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameObjectActive: 0
