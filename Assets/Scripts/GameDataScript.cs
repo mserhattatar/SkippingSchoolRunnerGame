@@ -3,7 +3,8 @@ using System.IO;
 using UnityEngine;
 
 public static class GameDataScript
-{ public static void SaveLevelDataAsJson()
+{
+    public static void SaveLevelDataAsJson()
     {
         string path = Application.persistentDataPath + "/RunRunGameData.json";
         var data = SerializeMapData();
@@ -48,6 +49,7 @@ public static class GameDataScript
         {
             Debug.Log(ex);
         }
+
         return data;
     }
 
@@ -55,7 +57,7 @@ public static class GameDataScript
     {
         var data = new LevelData();
         data = levelData;
-        if (data != null) 
+        if (data != null)
             CanvasController.instance.bestScore = data.bestScore;
         else
         {

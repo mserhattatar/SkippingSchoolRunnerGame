@@ -16,7 +16,7 @@ public class ObstacleObjectsManager : MonoBehaviour
     {
         _activeObsIndex = -1;
         _oldPlayerPosition = playerGameObject.transform.position.z;
-        GameManager.resetLevelDelegate += ResetObstacleObjects;
+        GameManager.ResetLevelDelegate += ResetObstacleObjects;
     }
 
     private void Update()

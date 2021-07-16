@@ -1,22 +1,24 @@
 using UnityEngine;
+
 public class JoystickManager : MonoBehaviour
 {
     private static Joystick _joystick;
-    protected static float joystickHorizontal;
-    protected static float joystickVertical;
+    protected static float JoystickHorizontal;
+    protected static float JoystickVertical;
 
     private void Awake()
     {
         _joystick = FindObjectOfType<Joystick>();
     }
+
     private void FixedUpdate()
     {
-        joystickHorizontal = _joystick.Horizontal;
-        joystickVertical = _joystick.Vertical;
+        JoystickHorizontal = _joystick.Horizontal;
+        JoystickVertical = _joystick.Vertical;
     }
 
     protected static bool CheckJoystickHorizontal()
     {
-        return (joystickHorizontal > 0.3 || joystickHorizontal < -0.3);
+        return (JoystickHorizontal > 0.3 || JoystickHorizontal < -0.3);
     }
 }

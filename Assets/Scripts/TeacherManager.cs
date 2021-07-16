@@ -4,7 +4,7 @@ public class TeacherManager : JoystickManager
 {
     private Animator _animator;
     private bool _isTeacherStarted;
-    
+
     public GameObject studentPlayer;
     [HideInInspector] public float distance;
 
@@ -16,9 +16,9 @@ public class TeacherManager : JoystickManager
     private void Start()
     {
         distance = -7f;
-        CanvasController.timerDelegate +=  StartTeacherRun;
-        GameManager.resetLevelDelegate += ResetTeacher;
-        GameManager.resetLevelDelegate += SetTeacherTag;
+        CanvasController.TimerDelegate += StartTeacherRun;
+        GameManager.ResetLevelDelegate += ResetTeacher;
+        GameManager.ResetLevelDelegate += SetTeacherTag;
         StudentCollisionController.obstacleCollisionDelegate += UpdateDistance;
         StudentCollisionController.teacherCollisionDelegate += TeacherLookBackRotation;
         StudentCollisionController.teacherCollisionDelegate += TeacherRunAnimationSetPassive;
@@ -29,6 +29,7 @@ public class TeacherManager : JoystickManager
     {
         distance += 1f;
     }
+
     private void StartTeacherRun()
     {
         _isTeacherStarted = true;
@@ -37,14 +38,15 @@ public class TeacherManager : JoystickManager
 
     private void FixedUpdate()
     {
-        if(_isTeacherStarted)
+        if (_isTeacherStarted)
             TeacherMovement();
     }
 
     private void TeacherMovement()
     {
         var studentPos = studentPlayer.transform.position;
-        transform.position = Vector3.Lerp(transform.position, (studentPos + (Vector3.forward * distance)), 4f * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, (studentPos + (Vector3.forward * distance)),
+            4f * Time.deltaTime);
         if (transform.position.z >= studentPlayer.transform.position.z)
             distance = 1f;
     }
@@ -68,16 +70,18 @@ public class TeacherManager : JoystickManager
     {
         gameObject.tag = "Untagged";
     }
+
     private void SetTeacherTag()
     {
         gameObject.tag = "Teacher";
     }
+
     private void ResetTeacher()
     {
         transform.rotation = Quaternion.Euler(0f, 0, 0f);
         distance = -7f;
         _isTeacherStarted = false;
         TeacherRunAnimationSetPassive();
-        transform.position = new Vector3(0f,0.23f,-3.38f);
+        transform.position = new Vector3(0f, 0.23f, -3.38f);
     }
 }
