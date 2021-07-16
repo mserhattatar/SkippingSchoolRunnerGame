@@ -6,16 +6,11 @@ using Random = UnityEngine.Random;
 public class ObstacleObjectsManager : MonoBehaviour
 {
     private float _oldPlayerPosition;
-
-    public static ObstacleObjectsManager instance;
-    public List<ObstacleObjectController> obstacleList = new List<ObstacleObjectController>();
-    public GameObject playerGameObject;
     private int _activeObsIndex;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    [SerializeField] private List<ObstacleObjectController> obstacleList = new List<ObstacleObjectController>();
+    public GameObject playerGameObject;
+
 
     private void Start()
     {
@@ -26,7 +21,6 @@ public class ObstacleObjectsManager : MonoBehaviour
 
     private void Update()
     {
-        
         if (_oldPlayerPosition + 15f < playerGameObject.transform.position.z)
         {
             _oldPlayerPosition = playerGameObject.transform.position.z;
@@ -35,6 +29,7 @@ public class ObstacleObjectsManager : MonoBehaviour
         else
             ObstacleObjectSetPassive();
     }
+
     private void ObstacleObjectSetPassive(bool all = false)
     {
         var activeObstacleList = obstacleList.Where(o => o.isGameObjectActive);
@@ -44,9 +39,11 @@ public class ObstacleObjectsManager : MonoBehaviour
                 o.ObstacleObjectSetActive(false);
         }
     }
-    private void  ObstacleObjectSetActive()
+
+    private void ObstacleObjectSetActive()
     {
-        var firstPassiveObstacle = obstacleList.First(t => !t.isGameObjectActive && obstacleList.IndexOf(t) > _activeObsIndex);
+        var firstPassiveObstacle =
+            obstacleList.First(t => !t.isGameObjectActive && obstacleList.IndexOf(t) > _activeObsIndex);
         firstPassiveObstacle.SetObstacleObject(RandomObstaclePosition(), RandomObstacleRotation());
         if (obstacleList.IndexOf(firstPassiveObstacle) == obstacleList.Count - 1)
             _activeObsIndex = -1;
@@ -57,9 +54,9 @@ public class ObstacleObjectsManager : MonoBehaviour
     private Vector3 RandomObstaclePosition()
     {
         var extraX = Random.Range(-4f, 4f);
-        var extraZ =Random.Range(30f, 50f);
+        var extraZ = Random.Range(30f, 50f);
         var pPos = playerGameObject.transform.position;
-        var obstaclePosition =new Vector3(extraX, 15f, pPos.z +extraZ);
+        var obstaclePosition = new Vector3(extraX, 15f, pPos.z + extraZ);
         return obstaclePosition;
     }
 
@@ -69,7 +66,8 @@ public class ObstacleObjectsManager : MonoBehaviour
         var obstacleRotation = Quaternion.Euler(0f, 180f + rotationExtraPos, 0f);
         return obstacleRotation;
     }
-    public void ResetObstacleObjects()
+
+    private void ResetObstacleObjects()
     {
         _activeObsIndex = -1;
         _oldPlayerPosition = playerGameObject.transform.position.z;
