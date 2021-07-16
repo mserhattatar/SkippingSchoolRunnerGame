@@ -15,8 +15,8 @@ public class StudentAnimatorController : MonoBehaviour
 
     private void Start()
     {
-        CanvasController.timerDelegate += StudentRunAnimationSetActive;
-        GameManager.resetLevelDelegate += StudentAngryAnimationSetPassive;
+        CanvasController.TimerDelegate += StudentRunAnimationSetActive;
+        GameManager.ResetLevelDelegate += StudentAngryAnimationSetPassive;
         StudentCollisionController.obstacleCollisionDelegate += StudentStumbleAnimationActive;
         StudentCollisionController.teacherCollisionDelegate += StudentAngryAnimationSetActive;
     }

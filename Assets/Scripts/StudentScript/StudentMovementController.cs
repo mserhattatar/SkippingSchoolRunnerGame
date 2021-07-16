@@ -1,17 +1,17 @@
 using UnityEngine;
+
 public class StudentMovementController : JoystickManager
 {
-    [HideInInspector]
-    public bool stopPlayerMovement;
-    
+    [HideInInspector] public bool stopPlayerMovement;
+
     [SerializeField] private float forwardSpeed = 2.4f;
     [SerializeField] private float movementSpeed = 1.7f;
     private float _targetY;
     private bool _isJumping;
     private bool _stopPos;
     private bool _isPlayerRun;
-   
-    
+
+
     private void Awake()
     {
         _targetY = 0.24f;
@@ -20,15 +20,17 @@ public class StudentMovementController : JoystickManager
 
     private void Start()
     {
-        CanvasController.timerDelegate += StudentMovement;
-        GameManager.resetLevelDelegate += ResetMovement;
+        CanvasController.TimerDelegate += StudentMovement;
+        GameManager.ResetLevelDelegate += ResetMovement;
         StudentCollisionController.teacherCollisionDelegate += StopStudentMovement;
     }
+
     private void FixedUpdate()
     {
-        if(_isPlayerRun)
+        if (_isPlayerRun)
             StudentMovement();
     }
+
     private void StudentMovement()
     {
         if (!_isPlayerRun)
@@ -40,9 +42,10 @@ public class StudentMovementController : JoystickManager
             _stopPos = true;
             return;
         }
+
         var pPos = transform.position;
-        
-        var targetX = pPos.x + joystickHorizontal * movementSpeed;
+
+        var targetX = pPos.x + JoystickHorizontal * movementSpeed;
         if (targetX <= -4.5f)
             targetX = -4.5f;
         else if (targetX >= 4.5f)
@@ -51,14 +54,14 @@ public class StudentMovementController : JoystickManager
         var targetZ = pPos.z + forwardSpeed;
         var direction = new Vector3(x: targetX, _targetY, targetZ);
         StudentJump();
-        transform.position = Vector3.MoveTowards (pPos, direction ,15f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(pPos, direction, 15f * Time.deltaTime);
         StudentMovementRotatian();
     }
 
     private void StudentJump()
     {
         var positionYPos = transform.position.y;
-        if (!_isJumping && joystickVertical > 0.5f)
+        if (!_isJumping && JoystickVertical > 0.5f)
         {
             _targetY = 4.5f;
             _isJumping = true;
@@ -66,14 +69,14 @@ public class StudentMovementController : JoystickManager
 
         if (_isJumping && positionYPos > 4f)
             _targetY = 0.24f;
-        
+
         if (_isJumping && positionYPos < 0.26f)
             _isJumping = false;
     }
 
     private void StudentMovementRotatian()
     {
-        var direction = gameObject.transform.position + Vector3.right * (joystickHorizontal * 30f);
+        var direction = gameObject.transform.position + Vector3.right * (JoystickHorizontal * 30f);
         var lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 6f * Time.deltaTime);
     }

@@ -5,12 +5,14 @@ using UnityEngine;
 public class CanvasController : JoystickManager
 {
     public static CanvasController instance;
+
     public delegate void CanvasControllerDelegate();
-    public static CanvasControllerDelegate timerDelegate;
-    
+
+    public static CanvasControllerDelegate TimerDelegate;
+
     [SerializeField] private GameObject gameEndPanel;
     [SerializeField] private GameObject startPanel;
-    
+
     [SerializeField] private TextMeshProUGUI gameStartTimerText;
     [SerializeField] private TextMeshProUGUI gameEndScoreText;
     [SerializeField] private TextMeshProUGUI startPanelBestScoreText;
@@ -36,11 +38,11 @@ public class CanvasController : JoystickManager
         StudentCollisionController.teacherCollisionDelegate += GameEndPanelSetPassive;
         StudentCollisionController.teacherCollisionDelegate += GameEndPanelSetActive;
         StudentCollisionController.teacherCollisionDelegate += LevelScoreMetreTextSetPassive;
-        GameManager.resetLevelDelegate+= GameEndPanelSetPassive;
-        
-        timerDelegate += LevelScoreMetreTextSetActive;
+        GameManager.ResetLevelDelegate += GameEndPanelSetPassive;
+
+        TimerDelegate += LevelScoreMetreTextSetActive;
     }
-    
+
     private void Update()
     {
         switch (_isTimerStarted)
@@ -86,23 +88,25 @@ public class CanvasController : JoystickManager
 
     private void GameEndPanelScoreText()
     {
-        gameEndScoreText.text = "Score = " + (int)student.position.z/2 + " meters";
+        gameEndScoreText.text = "Score = " + (int) student.position.z / 2 + " meters";
         UpdateBestScore();
     }
+
     private void LevelScoreMetreTextSetActive()
     {
         levelScoreText.gameObject.SetActive(true);
     }
+
     private void LevelScoreMetreTextSetPassive()
     {
         levelScoreText.gameObject.SetActive(false);
     }
-    
+
 
     private void LevelScoreMetreText()
     {
-        if(levelScoreText.gameObject.activeInHierarchy)
-            levelScoreText.text = (int) student.position.z/2 + "M";
+        if (levelScoreText.gameObject.activeInHierarchy)
+            levelScoreText.text = (int) student.position.z / 2 + "M";
     }
 
     private void GameStartTimerTextSetActive(bool setActive)
@@ -118,34 +122,34 @@ public class CanvasController : JoystickManager
     {
         gameStartTimerText.text = time.ToString();
     }
-    
+
     private void UpdateStartTimer()
     {
         if (!_stopTimer && _timerTime > -1f)
         {
             _timerTime -= Time.deltaTime * 1.9f;
-            GameStartTimerText((int)_timerTime);
+            GameStartTimerText((int) _timerTime);
 
             if (_timerTime < -0.1f)
             {
                 GameStartTimerTextSetActive(false);
                 _stopTimer = true;
-                timerDelegate();
+                TimerDelegate();
             }
         }
     }
 
     private void UpdateBestScore()
     {
-        if(bestScore < (int)student.position.z/2)
-            bestScore = (int)student.position.z/2;
+        if (bestScore < (int) student.position.z / 2)
+            bestScore = (int) student.position.z / 2;
     }
 
     public void ResetLevelButton()
     {
         _timerTime = 3f;
         _isTimerStarted = false;
-        GameManager.resetLevelDelegate();
+        GameManager.ResetLevelDelegate();
         GameDataScript.SaveLevelDataAsJson();
         StartPanelSetActive(true);
         _stopTimer = false;
