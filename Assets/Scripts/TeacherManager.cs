@@ -1,62 +1,83 @@
 using UnityEngine;
 
-public class TeacherManager : MonoBehaviour
+public class TeacherManager : JoystickManager
 {
     private Animator _animator;
-    private bool _run;
+    private bool _isTeacherStarted;
     
-    public static TeacherManager instance;
     public GameObject studentPlayer;
-    [HideInInspector]
-    public float distance;
-    
+    [HideInInspector] public float distance;
 
     private void Awake()
     {
-        instance = this;
         _animator = gameObject.GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
         distance = -7f;
+        CanvasController.timerDelegate +=  StartTeacherRun;
+        GameManager.resetLevelDelegate += ResetTeacher;
+        GameManager.resetLevelDelegate += SetTeacherTag;
+        StudentCollisionController.obstacleCollisionDelegate += UpdateDistance;
+        StudentCollisionController.teacherCollisionDelegate += TeacherLookBackRotation;
+        StudentCollisionController.teacherCollisionDelegate += TeacherRunAnimationSetPassive;
+        StudentCollisionController.teacherCollisionDelegate += DeleteTeacherTag;
+    }
+
+    private void UpdateDistance()
+    {
+        distance += 1f;
+    }
+    private void StartTeacherRun()
+    {
+        _isTeacherStarted = true;
+        TeacherRunAnimationSetActive();
     }
 
     private void FixedUpdate()
     {
-        TeacherMovement();
+        if(_isTeacherStarted)
+            TeacherMovement();
     }
 
     private void TeacherMovement()
     {
-        if (_run)
-        {
-            var studentPos = studentPlayer.transform.position;
-            transform.position = Vector3.Lerp(transform.position, (studentPos + (Vector3.forward * distance)),
-                4f * Time.deltaTime);
-        }
+        var studentPos = studentPlayer.transform.position;
+        transform.position = Vector3.Lerp(transform.position, (studentPos + (Vector3.forward * distance)), 4f * Time.deltaTime);
         if (transform.position.z >= studentPlayer.transform.position.z)
             distance = 1f;
     }
 
-    public void TeacherRun()
+    private void TeacherLookBackRotation()
     {
-        _run = true;
-        TeacherRunAnimation(true);
+        transform.rotation = Quaternion.Euler(0f, 180f, 0f);
     }
 
-    public void TeacherRunAnimation(bool value)
+    private void TeacherRunAnimationSetActive()
     {
-        _animator.SetBool("teacherRun", value);
+        _animator.SetBool("teacherRun", true);
     }
 
-    public void TeacherLookBackRotation(float y)
+    private void TeacherRunAnimationSetPassive()
     {
-        transform.rotation = Quaternion.Euler(0f, y, 0f);
+        _animator.SetBool("teacherRun", false);
     }
 
-    public void ResetTeacher()
+    private void DeleteTeacherTag()
     {
-        TeacherLookBackRotation(0f);
+        gameObject.tag = "Untagged";
+    }
+    private void SetTeacherTag()
+    {
+        gameObject.tag = "Teacher";
+    }
+    private void ResetTeacher()
+    {
+        transform.rotation = Quaternion.Euler(0f, 0, 0f);
         distance = -7f;
-        _run = false;
-        TeacherRunAnimation(false);
+        _isTeacherStarted = false;
+        TeacherRunAnimationSetPassive();
         transform.position = new Vector3(0f,0.23f,-3.38f);
     }
 }

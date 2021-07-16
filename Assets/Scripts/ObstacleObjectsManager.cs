@@ -6,70 +6,57 @@ using Random = UnityEngine.Random;
 public class ObstacleObjectsManager : MonoBehaviour
 {
     private float _oldPlayerPosition;
+    private int _activeObsIndex;
 
-    public static ObstacleObjectsManager instance;
-    public List<ObstacleObjectController> obstacleObjectsList = new List<ObstacleObjectController>();
+    [SerializeField] private List<ObstacleObjectController> obstacleList = new List<ObstacleObjectController>();
     public GameObject playerGameObject;
 
-    private void Awake()
-    {
-        instance = this;
-    }
 
     private void Start()
     {
-        GetPlayerPos();
+        _activeObsIndex = -1;
+        _oldPlayerPosition = playerGameObject.transform.position.z;
+        GameManager.resetLevelDelegate += ResetObstacleObjects;
     }
 
     private void Update()
     {
-        
-        if ((_oldPlayerPosition + 15f < playerGameObject.transform.position.z))
+        if (_oldPlayerPosition + 15f < playerGameObject.transform.position.z)
         {
-            GetPlayerPos();
+            _oldPlayerPosition = playerGameObject.transform.position.z;
             ObstacleObjectSetActive();
         }
         else
-        {
             ObstacleObjectSetPassive();
-        }
-    }
-
-    private void GetPlayerPos()
-    {
-        _oldPlayerPosition = playerGameObject.transform.position.z;
     }
 
     private void ObstacleObjectSetPassive(bool all = false)
     {
-        foreach (var o in obstacleObjectsList.Where(o => o.isGameObjectActive))
+        var activeObstacleList = obstacleList.Where(o => o.isGameObjectActive);
+        foreach (var o in activeObstacleList)
         {
-            if (all)
-            {
+            if (all || _oldPlayerPosition > o.transform.position.z + 10f || o.transform.position.y < -5f)
                 o.ObstacleObjectSetActive(false);
-                return;
-            }
-            if (_oldPlayerPosition - 10f > o.transform.position.z || o.transform.position.y < -5f)
-            {
-                o.ObstacleObjectSetActive(false);
-            }
         }
     }
-    private void  ObstacleObjectSetActive()
+
+    private void ObstacleObjectSetActive()
     {
-        foreach (var t in obstacleObjectsList.Where(t => !t.isGameObjectActive))
-        {
-            t.SetObstacleObject(RandomObstaclePosition(), RandomObstacleRotation());
-            return;
-        }
+        var firstPassiveObstacle =
+            obstacleList.First(t => !t.isGameObjectActive && obstacleList.IndexOf(t) > _activeObsIndex);
+        firstPassiveObstacle.SetObstacleObject(RandomObstaclePosition(), RandomObstacleRotation());
+        if (obstacleList.IndexOf(firstPassiveObstacle) == obstacleList.Count - 1)
+            _activeObsIndex = -1;
+        else
+            _activeObsIndex = obstacleList.IndexOf(firstPassiveObstacle);
     }
 
     private Vector3 RandomObstaclePosition()
     {
-        var extraX = Random.Range(-3f, 4f);
-        var extraZ =Random.Range(30f, 50f);
+        var extraX = Random.Range(-4f, 4f);
+        var extraZ = Random.Range(30f, 50f);
         var pPos = playerGameObject.transform.position;
-        var obstaclePosition =new Vector3(pPos.x +extraX, 15f, pPos.z +extraZ);
+        var obstaclePosition = new Vector3(extraX, 15f, pPos.z + extraZ);
         return obstaclePosition;
     }
 
@@ -79,9 +66,11 @@ public class ObstacleObjectsManager : MonoBehaviour
         var obstacleRotation = Quaternion.Euler(0f, 180f + rotationExtraPos, 0f);
         return obstacleRotation;
     }
-    public void ResetObstacleObjects()
+
+    private void ResetObstacleObjects()
     {
-        GetPlayerPos();
+        _activeObsIndex = -1;
+        _oldPlayerPosition = playerGameObject.transform.position.z;
         ObstacleObjectSetPassive(true);
     }
 }

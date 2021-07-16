@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
 
-public class CanvasController : MonoBehaviour
+
+public class CanvasController : JoystickManager
 {
     public static CanvasController instance;
+    public delegate void CanvasControllerDelegate();
+    public static CanvasControllerDelegate timerDelegate;
     
     [SerializeField] private GameObject gameEndPanel;
     [SerializeField] private GameObject startPanel;
@@ -16,66 +19,93 @@ public class CanvasController : MonoBehaviour
     public int bestScore;
     private float _timerTime;
     private bool _isTimerStarted;
+    private bool _stopTimer;
 
     private void Awake()
     {
         instance = this;
-        _timerTime = 3f;
     }
 
     private void Start()
     {
+        _timerTime = 3f;
         StartPanelSetActive(true);
         _isTimerStarted = false;
+        _stopTimer = false;
+        StudentCollisionController.teacherCollisionDelegate += GameEndPanelScoreText;
+        StudentCollisionController.teacherCollisionDelegate += GameEndPanelSetPassive;
+        StudentCollisionController.teacherCollisionDelegate += GameEndPanelSetActive;
+        StudentCollisionController.teacherCollisionDelegate += LevelScoreMetreTextSetPassive;
+        GameManager.resetLevelDelegate+= GameEndPanelSetPassive;
+        
+        timerDelegate += LevelScoreMetreTextSetActive;
     }
     
-    private void LateUpdate()
+    private void Update()
     {
-        UpdateStartTimer();
+        switch (_isTimerStarted)
+        {
+            case false when CheckJoystickHorizontal():
+                StartPanelTimer();
+                break;
+            case true when !_stopTimer:
+                UpdateStartTimer();
+                break;
+        }
+
         LevelScoreMetreText();
     }
 
-
-
-    public void StartPanelToTimer()
+    private void StartPanelTimer()
     {
         StartPanelSetActive(false);
         GameStartTimerTextSetActive(true);
     }
 
-    public void StartPanelSetActive(bool setActive)
+    private void StartPanelSetActive(bool setActive)
     {
         startPanel.SetActive(setActive);
         if (setActive)
             StartPanelBestScore();
     }
-    public void StartPanelBestScore()
+
+    private void StartPanelBestScore()
     {
         startPanelBestScoreText.text = (bestScore + " M");
     }
 
-    public void GameEndPanelSetActive(bool setActive)
+    private void GameEndPanelSetActive()
     {
-        gameEndPanel.SetActive(setActive);
+        gameEndPanel.SetActive(true);
     }
 
-    public void GameEndPanelScoreText()
+    private void GameEndPanelSetPassive()
     {
-        gameEndScoreText.text = "Score = " + (int)student.position.z + " meters";
+        gameEndPanel.SetActive(false);
+    }
+
+    private void GameEndPanelScoreText()
+    {
+        gameEndScoreText.text = "Score = " + (int)student.position.z/2 + " meters";
+        UpdateBestScore();
+    }
+    private void LevelScoreMetreTextSetActive()
+    {
+        levelScoreText.gameObject.SetActive(true);
+    }
+    private void LevelScoreMetreTextSetPassive()
+    {
+        levelScoreText.gameObject.SetActive(false);
     }
     
-    public void LevelScoreMetreTextSetActive(bool setActive)
-    {
-        levelScoreText.gameObject.SetActive(setActive);
-    }
-    
-    public void LevelScoreMetreText()
+
+    private void LevelScoreMetreText()
     {
         if(levelScoreText.gameObject.activeInHierarchy)
-            levelScoreText.text = (int) student.position.z + "M";
+            levelScoreText.text = (int) student.position.z/2 + "M";
     }
-    
-    public void GameStartTimerTextSetActive(bool setActive)
+
+    private void GameStartTimerTextSetActive(bool setActive)
     {
         gameStartTimerText.gameObject.SetActive(setActive);
         if (setActive)
@@ -83,40 +113,41 @@ public class CanvasController : MonoBehaviour
         else
             _timerTime = 3f;
     }
-    
-    public void GameStartTimerText(int time)
+
+    private void GameStartTimerText(int time)
     {
         gameStartTimerText.text = time.ToString();
     }
     
     private void UpdateStartTimer()
     {
-        if (_isTimerStarted && _timerTime > -1f)
+        if (!_stopTimer && _timerTime > -1f)
         {
-            _timerTime -= Time.deltaTime * 1.8f;
+            _timerTime -= Time.deltaTime * 1.9f;
             GameStartTimerText((int)_timerTime);
 
             if (_timerTime < -0.1f)
             {
                 GameStartTimerTextSetActive(false);
-                StudentMovementController.startTimerFinish = true;
+                _stopTimer = true;
+                timerDelegate();
             }
         }
     }
-    
 
-    private void WriteBestScoreData()
+    private void UpdateBestScore()
     {
-        if(bestScore < (int)student.position.z)
-            bestScore = (int)student.position.z;
+        if(bestScore < (int)student.position.z/2)
+            bestScore = (int)student.position.z/2;
     }
 
     public void ResetLevelButton()
     {
-        GameEndPanelSetActive(false);
-        WriteBestScoreData();
+        _timerTime = 3f;
         _isTimerStarted = false;
-        GameManager.instance.ResetLevel();
+        GameManager.resetLevelDelegate();
+        GameDataScript.SaveLevelDataAsJson();
         StartPanelSetActive(true);
+        _stopTimer = false;
     }
 }
