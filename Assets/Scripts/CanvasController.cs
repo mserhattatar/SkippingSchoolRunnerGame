@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class CanvasController : JoystickManager
 
     [SerializeField] private GameObject gameEndPanel;
     [SerializeField] private GameObject startPanel;
+    [SerializeField] private GameObject homePanel;
 
     [SerializeField] private TextMeshProUGUI gameStartTimerText;
     [SerializeField] private TextMeshProUGUI gameEndScoreText;
@@ -31,17 +33,19 @@ public class CanvasController : JoystickManager
     private void Start()
     {
         _timerTime = 3f;
-        StartPanelSetActive(true);
+        HomePanelSetActive();
         _isTimerStarted = false;
         _stopTimer = false;
-        StudentCollisionController.teacherCollisionDelegate += GameEndPanelScoreText;
-        StudentCollisionController.teacherCollisionDelegate += GameEndPanelSetPassive;
-        StudentCollisionController.teacherCollisionDelegate += GameEndPanelSetActive;
-        StudentCollisionController.teacherCollisionDelegate += LevelScoreMetreTextSetPassive;
+        StudentCollisionController.TeacherCollisionDelegate += GameEndPanelScoreText;
+        StudentCollisionController.TeacherCollisionDelegate += GameEndPanelSetPassive;
+        StudentCollisionController.TeacherCollisionDelegate += GameEndPanelSetActive;
+        StudentCollisionController.TeacherCollisionDelegate += LevelScoreMetreTextSetPassive;
         GameManager.ResetLevelDelegate += GameEndPanelSetPassive;
 
         TimerDelegate += LevelScoreMetreTextSetActive;
     }
+
+  
 
     private void Update()
     {
@@ -62,6 +66,22 @@ public class CanvasController : JoystickManager
     {
         StartPanelSetActive(false);
         GameStartTimerTextSetActive(true);
+    }
+
+    private void HomePanelSetPassive()
+    {
+        homePanel.SetActive(false);
+    }
+    private void HomePanelSetActive()
+    {
+        homePanel.SetActive(true);
+        StartCoroutine(HomePanelSetPassiveDelay());
+    }
+    private IEnumerator HomePanelSetPassiveDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        HomePanelSetPassive();
+        StartPanelSetActive(true);
     }
 
     private void StartPanelSetActive(bool setActive)
@@ -151,7 +171,7 @@ public class CanvasController : JoystickManager
         _isTimerStarted = false;
         GameManager.ResetLevelDelegate();
         GameDataScript.SaveLevelDataAsJson();
-        StartPanelSetActive(true);
+        HomePanelSetActive();
         _stopTimer = false;
     }
 }

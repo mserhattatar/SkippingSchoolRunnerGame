@@ -19,10 +19,10 @@ public class TeacherManager : JoystickManager
         CanvasController.TimerDelegate += StartTeacherRun;
         GameManager.ResetLevelDelegate += ResetTeacher;
         GameManager.ResetLevelDelegate += SetTeacherTag;
-        StudentCollisionController.obstacleCollisionDelegate += UpdateDistance;
-        StudentCollisionController.teacherCollisionDelegate += TeacherLookBackRotation;
-        StudentCollisionController.teacherCollisionDelegate += TeacherRunAnimationSetPassive;
-        StudentCollisionController.teacherCollisionDelegate += DeleteTeacherTag;
+        StudentCollisionController.ObstacleCollisionDelegate += UpdateDistance;
+        StudentCollisionController.TeacherCollisionDelegate += TeacherLookBackRotation;
+        StudentCollisionController.TeacherCollisionDelegate += TeacherRunAnimationSetPassive;
+        StudentCollisionController.TeacherCollisionDelegate += DeleteTeacherTag;
     }
 
     private void UpdateDistance()

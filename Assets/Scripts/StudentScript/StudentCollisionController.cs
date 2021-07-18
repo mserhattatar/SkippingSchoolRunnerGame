@@ -3,18 +3,18 @@ public class StudentCollisionController : MonoBehaviour
 {
     public delegate void StudentCollisionDelegate();
 
-    public static StudentCollisionDelegate teacherCollisionDelegate;
-    public static StudentCollisionDelegate obstacleCollisionDelegate;
+    public static StudentCollisionDelegate TeacherCollisionDelegate;
+    public static StudentCollisionDelegate ObstacleCollisionDelegate;
     private void OnCollisionEnter(Collision other)
     {
         switch (other.gameObject.tag)
         {
             case "ActiveObstacleObject":
                 other.gameObject.tag = "PassiveObstacleObject";
-                obstacleCollisionDelegate();
+                ObstacleCollisionDelegate();
                 break;
             case "Teacher":
-                teacherCollisionDelegate();
+                TeacherCollisionDelegate();
                 break;
         }
     }

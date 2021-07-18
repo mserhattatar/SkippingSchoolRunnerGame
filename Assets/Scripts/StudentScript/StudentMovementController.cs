@@ -22,7 +22,7 @@ public class StudentMovementController : JoystickManager
     {
         CanvasController.TimerDelegate += StudentMovement;
         GameManager.ResetLevelDelegate += ResetMovement;
-        StudentCollisionController.teacherCollisionDelegate += StopStudentMovement;
+        StudentCollisionController.TeacherCollisionDelegate += StopStudentMovement;
     }
 
     private void FixedUpdate()

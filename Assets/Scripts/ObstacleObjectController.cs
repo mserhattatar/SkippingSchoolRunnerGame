@@ -9,6 +9,7 @@ public class ObstacleObjectController : MonoBehaviour
     {
         ObstacleObjectSetActive(true);
         var o = gameObject;
+        o.SetActive(true);
         var oTransform = o.transform;
         oTransform.position = position;
         oTransform.rotation = rotation;
@@ -18,5 +19,6 @@ public class ObstacleObjectController : MonoBehaviour
     public void ObstacleObjectSetActive(bool setActive)
     {
         isGameObjectActive = setActive;
+        gameObject.SetActive(false);
     }
 }
