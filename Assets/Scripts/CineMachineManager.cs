@@ -1,4 +1,6 @@
+using System;
 using Cinemachine;
+using StudentScript;
 using UnityEngine;
 
 public class CineMachineManager : MonoBehaviour
@@ -11,18 +13,22 @@ public class CineMachineManager : MonoBehaviour
     public CinemachineVirtualCamera cineMachine1;
     public CinemachineVirtualCamera cineMachine2;
 
-    private void Start()
+    private void OnEnable()
     {
-        CameraTransform(false);
         _shakeTimer = 0f;
         _cineMPerlin = cineMachine2.GetComponent<CinemachineVirtualCamera>()
             .GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        CanvasController.TimerDelegate += SwitchCamera1To2;
+        CanvasManager.SwitchCameraDelegate += SwitchCamera1To2;
         StudentCollisionController.ObstacleCollisionDelegate += ShakeCamera;
         StudentCollisionController.TeacherCollisionDelegate += SwitchCamera2To1;
     }
 
-    private void Update()
+    private void Start()
+    {
+        CameraTransform(false);
+    }
+
+    private void LateUpdate()
     {
         if (!_stopShake) return;
         ResetCameraShake();
@@ -32,7 +38,7 @@ public class CineMachineManager : MonoBehaviour
     {
         var cM1Transform = cineMachine1.transform;
         var cM2Transform = cineMachine2.transform;
-        
+
         if (get)
         {
             cM1Transform.position = _cM1Position;
@@ -47,12 +53,11 @@ public class CineMachineManager : MonoBehaviour
             _cM2Position = cM2Transform.position;
             _cM2Rotation = cM2Transform.eulerAngles;
         }
-       
     }
 
     private void ShakeCamera()
     {
-        _cineMPerlin.m_AmplitudeGain = 1;
+        _cineMPerlin.m_AmplitudeGain = 1.3f;
         _shakeTimer = 0.5f;
         _stopShake = true;
     }

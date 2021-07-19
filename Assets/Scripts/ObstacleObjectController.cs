@@ -4,7 +4,6 @@ public class ObstacleObjectController : MonoBehaviour
 {
     [HideInInspector] public bool isGameObjectActive;
 
-
     public void SetObstacleObject(Vector3 position, Quaternion rotation)
     {
         ObstacleObjectSetActive(true);

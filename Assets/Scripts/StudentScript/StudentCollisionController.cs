@@ -1,21 +1,24 @@
 using UnityEngine;
-public class StudentCollisionController : MonoBehaviour
-{
-    public delegate void StudentCollisionDelegate();
 
-    public static StudentCollisionDelegate TeacherCollisionDelegate;
-    public static StudentCollisionDelegate ObstacleCollisionDelegate;
-    private void OnCollisionEnter(Collision other)
+namespace StudentScript
+{
+    public class StudentCollisionController : MonoBehaviour
     {
-        switch (other.gameObject.tag)
+        public delegate void StudentCollisionDelegate();
+        public static StudentCollisionDelegate TeacherCollisionDelegate;
+        public static StudentCollisionDelegate ObstacleCollisionDelegate;
+        private void OnCollisionEnter(Collision other)
         {
-            case "ActiveObstacleObject":
-                other.gameObject.tag = "PassiveObstacleObject";
-                ObstacleCollisionDelegate();
-                break;
-            case "Teacher":
-                TeacherCollisionDelegate();
-                break;
+            switch (other.gameObject.tag)
+            {
+                case "ActiveObstacleObject":
+                    other.gameObject.tag = "PassiveObstacleObject";
+                    ObstacleCollisionDelegate();
+                    break;
+                case "Teacher":
+                    TeacherCollisionDelegate();
+                    break;
+            }
         }
     }
 }

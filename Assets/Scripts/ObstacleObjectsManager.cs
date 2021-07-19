@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,11 +13,15 @@ public class ObstacleObjectsManager : MonoBehaviour
     public GameObject playerGameObject;
 
 
+    private void OnEnable()
+    {
+        GameManager.ResetLevelDelegate += ResetObstacleObjects;
+    }
+
     private void Start()
     {
         _activeObsIndex = -1;
         _oldPlayerPosition = playerGameObject.transform.position.z;
-        GameManager.ResetLevelDelegate += ResetObstacleObjects;
     }
 
     private void Update()
