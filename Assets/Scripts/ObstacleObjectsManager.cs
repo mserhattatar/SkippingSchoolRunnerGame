@@ -16,23 +16,29 @@ public class ObstacleObjectsManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.ResetLevelDelegate += ResetObstacleObjects;
+        CanvasManager.TimerDelegate += SetOldPlayerPos;
     }
 
     private void Start()
     {
         _activeObsIndex = -1;
-        _oldPlayerPosition = playerGameObject.transform.position.z;
+        SetOldPlayerPos();
     }
 
     private void Update()
     {
         if (_oldPlayerPosition + 15f < playerGameObject.transform.position.z)
         {
-            _oldPlayerPosition = playerGameObject.transform.position.z;
+            SetOldPlayerPos();
             ObstacleObjectSetActive();
         }
         else
             ObstacleObjectSetPassive();
+    }
+
+    private void SetOldPlayerPos()
+    {
+        _oldPlayerPosition = playerGameObject.transform.position.z;
     }
 
     private void ObstacleObjectSetPassive(bool all = false)
@@ -75,7 +81,6 @@ public class ObstacleObjectsManager : MonoBehaviour
     private void ResetObstacleObjects()
     {
         _activeObsIndex = -1;
-        _oldPlayerPosition = playerGameObject.transform.position.z;
         ObstacleObjectSetPassive(true);
     }
 }
