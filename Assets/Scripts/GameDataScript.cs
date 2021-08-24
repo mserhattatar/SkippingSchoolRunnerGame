@@ -21,7 +21,7 @@ public static class GameDataScript
     private static string SerializeMapData()
     {
         var levelData = new LevelData();
-        levelData.bestScore = CanvasController.instance.bestScore;
+        levelData.bestScore = CanvasManager.instance.bestScore;
         var data = JsonUtility.ToJson(levelData);
         return data;
     }
@@ -58,7 +58,7 @@ public static class GameDataScript
         var data = new LevelData();
         data = levelData;
         if (data != null)
-            CanvasController.instance.bestScore = data.bestScore;
+            CanvasManager.instance.bestScore = data.bestScore;
         else
         {
             Debug.Log("data bulunamadı");

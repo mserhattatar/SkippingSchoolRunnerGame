@@ -1,3 +1,5 @@
+using System;
+using StudentScript;
 using UnityEngine;
 
 public class TeacherManager : JoystickManager
@@ -13,16 +15,20 @@ public class TeacherManager : JoystickManager
         _animator = gameObject.GetComponent<Animator>();
     }
 
+    private void OnEnable()
+    {
+        CanvasManager.TimerDelegate += StartTeacherRun;
+        GameManager.ResetLevelDelegate += ResetTeacher;
+        GameManager.ResetLevelDelegate += SetTeacherTag;
+        StudentCollisionController.ObstacleCollisionDelegate += UpdateDistance;
+        StudentCollisionController.TeacherCollisionDelegate += TeacherLookBackRotation;
+        StudentCollisionController.TeacherCollisionDelegate += TeacherRunAnimationSetPassive;
+        StudentCollisionController.TeacherCollisionDelegate += DeleteTeacherTag;
+    }
+
     private void Start()
     {
         distance = -7f;
-        CanvasController.TimerDelegate += StartTeacherRun;
-        GameManager.ResetLevelDelegate += ResetTeacher;
-        GameManager.ResetLevelDelegate += SetTeacherTag;
-        StudentCollisionController.obstacleCollisionDelegate += UpdateDistance;
-        StudentCollisionController.teacherCollisionDelegate += TeacherLookBackRotation;
-        StudentCollisionController.teacherCollisionDelegate += TeacherRunAnimationSetPassive;
-        StudentCollisionController.teacherCollisionDelegate += DeleteTeacherTag;
     }
 
     private void UpdateDistance()

@@ -1,4 +1,5 @@
 using Cinemachine;
+using StudentScript;
 using UnityEngine;
 
 public class CineMachineManager : MonoBehaviour
@@ -6,21 +7,22 @@ public class CineMachineManager : MonoBehaviour
     private float _shakeTimer;
     private bool _stopShake;
     private CinemachineBasicMultiChannelPerlin _cineMPerlin;
+    private Vector3 _cM1Position, _cM1Rotation, _cM2Position, _cM2Rotation;
 
     public CinemachineVirtualCamera cineMachine1;
     public CinemachineVirtualCamera cineMachine2;
 
-    private void Start()
+    private void OnEnable()
     {
         _shakeTimer = 0f;
         _cineMPerlin = cineMachine2.GetComponent<CinemachineVirtualCamera>()
             .GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        CanvasController.TimerDelegate += SwitchCamera1To2;
-        StudentCollisionController.obstacleCollisionDelegate += ShakeCamera;
-        StudentCollisionController.teacherCollisionDelegate += SwitchCamera2To1;
+        CanvasManager.SwitchCameraDelegate += SwitchCamera1To2;
+        StudentCollisionController.ObstacleCollisionDelegate += ShakeCamera;
+        StudentCollisionController.TeacherCollisionDelegate += SwitchCamera2To1;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!_stopShake) return;
         ResetCameraShake();
@@ -28,7 +30,7 @@ public class CineMachineManager : MonoBehaviour
 
     private void ShakeCamera()
     {
-        _cineMPerlin.m_AmplitudeGain = 1;
+        _cineMPerlin.m_AmplitudeGain = 1.3f;
         _shakeTimer = 0.5f;
         _stopShake = true;
     }
@@ -47,17 +49,13 @@ public class CineMachineManager : MonoBehaviour
 
     private void SwitchCamera1To2()
     {
-        cineMachine2.gameObject.SetActive(true);
         cineMachine1.Priority = 1;
         cineMachine2.Priority = 2;
-        cineMachine1.gameObject.SetActive(false);
     }
 
     private void SwitchCamera2To1()
     {
-        cineMachine1.gameObject.SetActive(true);
         cineMachine2.Priority = 1;
         cineMachine1.Priority = 2;
-        cineMachine2.gameObject.SetActive(false);
     }
 }
