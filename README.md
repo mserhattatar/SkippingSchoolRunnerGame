@@ -2,6 +2,11 @@
 
 This game is still in progress.
 
+##### TODO:
+- Better Shader
+- Complete the game story
+
+
 I have developed the SkippingSchoolRunnerGame in Unity with C# language. 
 You are the naughty kid who is running away from his mom to avoid school. But there are obstacles on your escape route. Every hit on an obstacle slows you down. You can jump over the obstacles or pass by them. Be careful and do not let your mom catch you!
 
