@@ -8,6 +8,8 @@ public class ObstacleObjectsManager : MonoBehaviour
 {
     private float _oldPlayerPosition;
     private int _activeObsIndex;
+    
+    
 
     [SerializeField] private List<ObstacleObjectController> obstacleList = new List<ObstacleObjectController>();
     public GameObject playerGameObject;
