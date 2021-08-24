@@ -1,4 +1,4 @@
-# Skipping School Runner Game
+# Skipping School / Runner Game
 
 This game is still in progress.
 
