@@ -5,7 +5,7 @@ using UnityEngine;
 public class TeacherManager : JoystickManager
 {
     private Animator _animator;
-    private bool _isTeacherStarted;
+    [SerializeField]private bool _isTeacherStarted;
 
     public GameObject studentPlayer;
     [HideInInspector] public float distance;
@@ -17,9 +17,10 @@ public class TeacherManager : JoystickManager
 
     private void OnEnable()
     {
-        CanvasManager.TimerDelegate += StartTeacherRun;
+        /*CanvasManager.TimerDelegate += StartTeacherRun;
         GameManager.ResetLevelDelegate += ResetTeacher;
-        GameManager.ResetLevelDelegate += SetTeacherTag;
+        GameManager.ResetLevelDelegate += SetTeacherTag;*/
+
         StudentCollisionController.ObstacleCollisionDelegate += UpdateDistance;
         StudentCollisionController.TeacherCollisionDelegate += TeacherLookBackRotation;
         StudentCollisionController.TeacherCollisionDelegate += TeacherRunAnimationSetPassive;

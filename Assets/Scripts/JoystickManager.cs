@@ -5,7 +5,6 @@ public class JoystickManager : MonoBehaviour
 {
     private static Joystick _joystick;
     protected static float JoystickHorizontal;
-    protected static float JoystickVertical;
 
     private void Awake()
     {
@@ -15,11 +14,5 @@ public class JoystickManager : MonoBehaviour
     private void FixedUpdate()
     {
         JoystickHorizontal = _joystick.Horizontal;
-        JoystickVertical = _joystick.Vertical;
-    }
-
-    protected static bool CheckJoystickHorizontal()
-    {
-        return (JoystickHorizontal > 0.3 || JoystickHorizontal < -0.3);
     }
 }
