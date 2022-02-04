@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private ComponentContainer myComponent;
+    private ComponentContainer _myComponent;
 
     public delegate void GameManagerDelegate();
 
@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public void Initialize(ComponentContainer componentContainer)
     {
-        myComponent = componentContainer;
+        _myComponent = componentContainer;
     }
 
     private void Awake()

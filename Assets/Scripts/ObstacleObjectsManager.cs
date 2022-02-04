@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class ObstacleObjectsManager : MonoBehaviour
 {
+    private ComponentContainer _myComponent;
+
     private float _oldPlayerPosition;
     private int _activeObsIndex;
     
@@ -14,11 +15,14 @@ public class ObstacleObjectsManager : MonoBehaviour
     [SerializeField] private List<ObstacleObjectController> obstacleList = new List<ObstacleObjectController>();
     public GameObject playerGameObject;
 
-
+    public void Initialize(ComponentContainer componentContainer)
+    {
+        _myComponent = componentContainer;
+    }
     private void OnEnable()
     {
         GameManager.ResetLevelDelegate += ResetObstacleObjects;
-        CanvasManager.TimerDelegate += SetOldPlayerPos;
+        //CanvasManager.TimerDelegate += SetOldPlayerPos;
     }
 
     private void Start()

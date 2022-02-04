@@ -7,7 +7,7 @@ public class CanvasManager : JoystickManager
 {
     public static CanvasManager instance;
     
-    private ComponentContainer myComponent;
+    private ComponentContainer _myComponent;
 
     private float _timerTime;
     private bool _isTimerStarted;
@@ -27,7 +27,7 @@ public class CanvasManager : JoystickManager
    
     public void Initialize(ComponentContainer componentContainer)
     {
-        myComponent = componentContainer;
+        _myComponent = componentContainer;
     }
     private void Awake()
     {

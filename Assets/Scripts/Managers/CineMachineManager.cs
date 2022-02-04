@@ -3,12 +3,19 @@ using UnityEngine;
 
 public class CineMachineManager : MonoBehaviour
 {
+    private ComponentContainer _myComponent;
+
     private float _shakeTimer;
     private bool _stopShake;
     private CinemachineBasicMultiChannelPerlin _cineMPerlin;
 
     public CinemachineVirtualCamera cineMachine1;
     public CinemachineVirtualCamera cineMachine2;
+
+    public void Initialize(ComponentContainer componentContainer)
+    {
+        _myComponent = componentContainer;
+    }
 
     private void OnEnable()
     {
